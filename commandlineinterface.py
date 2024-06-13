@@ -1,13 +1,28 @@
 from abc import ABC, abstractmethod
+from accountmanagement import AccountManagement
+from account import CheckingAccount
 
 class CommandLineInterface(ABC):
-    def get_user_input(self):
-        return input("Enter your command: ")
-    
-    def display_information(self, message):
-        print(message)
+    @abstractmethod
+    def display_menu(self):
+        pass
 
-    
+    @abstractmethod
+    def run(self):
+        pass
+
+class BankingSystemInterface(CommandLineInterface):
+    def __init__(self, account_management):
+        self.account_management = account_management
+
+    def get_amount(self, message):
+        user_input = input(message)
+        try:
+            return int(user_input)
+        except ValueError:
+            print("Input the number isn't appropriate\n") 
+
+
     def display_menu(self):
         menu = """
         Menu:
@@ -19,36 +34,41 @@ class CommandLineInterface(ABC):
         6. Transfer
         7. Exit
         """
-        self.display_information(menu)
+        print(menu)
 
     def run(self):
         while True:
             self.display_menu()
-            choice = self.get_user_input()
+            choice = input("Enter your command: ")
             if choice == '1':
-                account_id = input("Enter account ID: ")
-                initial_balance = float(input("Enter initial balance: "))
-                self.open_account(account_id, initial_balance)
+                customer_name = input("Enter your name: ")
+                initial_balance = self.get_amount("Enter initial balance: ")
+                self.account_management.open_account(CheckingAccount, customer_name, initial_balance)
             elif choice == '2':
                 account_id = input("Enter account ID: ")
-                self.close_account(account_id)
+                self.account_management.close_account(account_id)
             elif choice == '3':
                 account_id = input("Enter account ID: ")
-                self.get_account_info(account_id)
+                self.account_management.get_account_info(account_id)
             elif choice == '4':
                 account_id = input("Enter account ID: ")
-                amount = float(input("Enter amount to deposit: "))
-                self.deposit(account_id, amount)
+                amount = self.get_amount("Enter amount to deposit: ")
+                self.account_management.deposit(account_id, amount)
             elif choice == '5':
                 account_id = input("Enter account ID: ")
-                amount = float(input("Enter amount to withdraw: "))
-                self.withdraw(account_id, amount)
+                amount = self.get_amount("Enter amount to withdraw: ")
+                self.account_management.withdraw(account_id, amount)
             elif choice == '6':
                 from_account_id = input("Enter source account ID: ")
                 to_account_id = input("Enter destination account ID: ")
-                amount = float(input("Enter amount to transfer: "))
-                self.transfer(from_account_id, to_account_id, amount)
+                amount = self.get_amount("Enter amount to transfer: ")
+                self.account_management.transfer(from_account_id, to_account_id, amount)
             elif choice == '7':
                 break
             else:
-                self.display_information("Invalid choice. Please try again.")
+                print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    account_management = AccountManagement()
+    interface = BankingSystemInterface(account_management)
+    interface.run()
