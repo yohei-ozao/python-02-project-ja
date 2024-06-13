@@ -42,20 +42,6 @@ class Account(ABC):
             f"{self.get_transaction_history()}\n"
         )
 
-    @property
-    def interest(self):
-        """helper function to calculate simple interest
-
-        1 <= amount < THRESHOLD: 20.0
-        THRESHOLD <= amount: 15.0
-        """
-        THRESHOLD = 800
-
-        if self.balance >= 1 and self.balance < THRESHOLD:
-            return 20.0
-        elif self.balance >= THRESHOLD:
-            return 15.0
-
     @abstractmethod
     def can_withdraw(self, amount):
         """check if a user can withdraw the given amount"""
