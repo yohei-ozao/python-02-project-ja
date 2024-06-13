@@ -36,7 +36,7 @@ class Account(ABC):
     def __str__(self):
         return (
             f"---ACCOUNT INFORMATION---\n"
-            f"Account number: {self.account_id}\n"
+            f"Account ID: {self.account_id}\n"
             f"Name: {self.name}\n"
             f"Balance: {self.balance}\n"
             f"{self.get_transaction_history()}\n"
