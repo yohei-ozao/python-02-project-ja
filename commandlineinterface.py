@@ -18,10 +18,12 @@ class BankingSystemInterface(CommandLineInterface):
     def get_amount(self, message):
         user_input = input(message)
         try:
-            return int(user_input)
+            if int(user_input) < 0:
+                print("Input positive value")
+            else:
+                return int(user_input)
         except ValueError:
             print("Input the number isn't appropriate\n") 
-
 
     def display_menu(self):
         menu = """
