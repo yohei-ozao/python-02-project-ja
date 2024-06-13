@@ -27,7 +27,7 @@ class BankingSystemInterface(CommandLineInterface):
 
     def display_menu(self):
         menu = """
-        Menu:
+        Banking System Menu:
         1. Open Account
         2. Close Account
         3. Get Account Info
@@ -44,8 +44,9 @@ class BankingSystemInterface(CommandLineInterface):
             choice = input("Enter your command: ")
             if choice == '1':
                 customer_name = input("Enter your name: ")
+                passward = input("Enter your passward: ")
                 initial_balance = self.get_amount("Enter initial balance: ")
-                self.account_management.open_account(CheckingAccount, customer_name, initial_balance)
+                self.account_management.open_account(CheckingAccount, customer_name, passward, initial_balance)
             elif choice == '2':
                 account_id = input("Enter account ID: ")
                 self.account_management.close_account(account_id)

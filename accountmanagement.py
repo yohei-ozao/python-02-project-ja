@@ -13,8 +13,8 @@ class AccountManagement:
     def __init__(self):
         self.accounts = {}
         
-    def open_account(self, account_type, name, initial_balance):
-        new_account = account_type(name, initial_balance)
+    def open_account(self, account_type, name, passward, initial_balance):
+        new_account = account_type(name, passward, initial_balance)
         self.accounts[str(new_account.account_id)] = new_account
         print(f"Account {new_account.account_id} open successfully.")
 
@@ -29,18 +29,18 @@ class AccountManagement:
 
     @account_exist
     def deposit(self, account_id, amount):
-        self.accounts[account_id].deposit(amount)
+        print(self.accounts[account_id].deposit(amount))
 
     @account_exist   
     def withdraw(self, account_id, amount):
-        self.accounts[account_id].withdraw(amount)
+        print(self.accounts[account_id].withdraw(amount))
     
     def transfer(self, from_account_id, to_account_id, amount):
         if from_account_id in self.accounts:
             if to_account_id in self.accounts:
-                if self.accounts[from_account_id].withdraw(amount):
+                if "Failed" not in self.accounts[from_account_id].withdraw(amount):
                     self.accounts[to_account_id].deposit(amount)
-                print(f"Transferred {amount} from account {from_account_id} to account {to_account_id}.")
+                    print(f"Transferred {amount} from account {from_account_id} to account {to_account_id}.")
             else:
                 print(f"Account {to_account_id} does not exist.")
         else:
