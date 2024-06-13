@@ -1,5 +1,14 @@
 from abc import ABC, abstractmethod
 
+def account_exist(func):
+    def _wrapper(self, account_id, *args, **kwargs):
+        if account_id in self.accounts:
+            return func(self, account_id, *args, **kwargs)
+        else:
+            return print(f"Account {account_id} does not exist.")
+
+    return _wrapper
+
 class AccountManagement:
     def __init__(self):
         self.accounts = {}
@@ -8,32 +17,24 @@ class AccountManagement:
         new_account = account_type(name, initial_balance)
         self.accounts[str(new_account.account_id)] = new_account
         print(f"Account {new_account.account_id} open successfully.")
-    
+
+    @account_exist
     def close_account(self, account_id):
-        if account_id in self.accounts:
-            del self.accounts[account_id]
-            print(f"Account {account_id} closed successfully.")
-        else:
-            print(f"Account {account_id} does not exist.")
-    
+        del self.accounts[account_id]
+        print(f"Account {account_id} closed successfully.")
+
+    @account_exist
     def get_account_info(self, account_id):
-        if account_id in self.accounts:
             print(self.accounts[account_id])
-        else:
-            print(f"Account {account_id} does not exist.")
-        
+
+    @account_exist
     def deposit(self, account_id, amount):
-        if account_id in self.accounts:
-            self.accounts[account_id].deposit(amount)
-        else:
-            print(f"Account {account_id} does not exist." )
-        
+        self.accounts[account_id].deposit(amount)
+
+    @account_exist   
     def withdraw(self, account_id, amount):
-        if account_id in self.accounts:
-            self.accounts[account_id].withdraw(amount)
-        else:
-            print(f"Account {account_id} does not exist.")
-        
+        self.accounts[account_id].withdraw(amount)
+    
     def transfer(self, from_account_id, to_account_id, amount):
         if from_account_id in self.accounts:
             if to_account_id in self.accounts:
