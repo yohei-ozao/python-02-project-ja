@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from accountmanagement import AccountManagement
+from account_management import AccountManagement
 from account import CheckingAccount
 
 class CommandLineInterface(ABC):
