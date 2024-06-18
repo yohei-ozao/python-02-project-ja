@@ -9,18 +9,6 @@ def record_history(func):
         return msg
 
     return _wrapper
-
-def require_password(func):
-    """decorator for Account to check passward"""
-
-    def _wrapper(self, *args, **kwargs):
-        passward = input("Input the passward: ")
-        if passward == self.passward:
-            return func(self, *args, **kwargs)
-        else:
-            return "Failed to operate. Your passward is incorrect."
-
-    return _wrapper
     
 class Account(ABC):
     __account_id = 0
@@ -51,7 +39,6 @@ class Account(ABC):
         self.balance += amount
         return f"Deposit {amount} to the account {self.account_id}"
 
-    # @record_history
     def withdraw(self, amount):
         if not self.can_withdraw(amount):
             return f"Failed to withdraw {amount} from the account {self.account_id}"
@@ -73,13 +60,11 @@ class SavingsAccount(Account):
     def can_withdraw(self, amount):
         return self.balance - amount >= 50
 
-
 class CheckingAccount(Account):
     def can_withdraw(self, amount):
         return self.balance >= amount
 
     @record_history
-    @require_password
     def withdraw(self, amount):
         if amount > 1_000:
             return f"Failed to withdraw {amount} from the account {self.account_id}"

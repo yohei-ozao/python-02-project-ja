@@ -14,6 +14,17 @@ def account_exist(func):
 class AccountManagement:
     def __init__(self):
         self.accounts = {}
+
+    def check_passward(self, account_id):
+        remaining_times = 3
+        while remaining_times > 0:
+            passward = input("Input the passward: ")
+            if passward == self.accounts[account_id].passward:
+                return True
+            else:
+                remaining_times -= 1
+                print(f"Invalid passward. You can try {remaining_times} times")
+        return False
         
     def open_account(self, account_type: Account, name: str, passward: str, initial_balance: int) -> None:
         """open new account
@@ -35,8 +46,9 @@ class AccountManagement:
         Args:
             account_id (str): Account ID to be closed
         """
-        del self.accounts[account_id]
-        print(f"Account {account_id} closed successfully.")
+        if self.check_passward(account_id):
+            del self.accounts[account_id]
+            print(f"Account {account_id} closed successfully.")
 
     @account_exist
     def get_account_info(self, account_id: str) -> None:
@@ -45,7 +57,8 @@ class AccountManagement:
         Args:
             account_id (str): Account ID to get the information
         """
-        print(self.accounts[account_id])
+        if self.check_passward(account_id):
+            print(self.accounts[account_id])
 
     @account_exist
     def deposit(self, account_id: str, amount: int) -> None:
@@ -55,7 +68,8 @@ class AccountManagement:
             account_id (str): Account ID to be deposited
             amount (int): Deposit Amount
         """
-        print(self.accounts[account_id].deposit(amount))
+        if self.check_passward(account_id):
+            print(self.accounts[account_id].deposit(amount))
 
     @account_exist   
     def withdraw(self, account_id: str, amount: int) -> None:
@@ -65,7 +79,8 @@ class AccountManagement:
             account_id (str): Account ID to withdraw
             amount (int): Withdraw Amount
         """
-        print(self.accounts[account_id].withdraw(amount))
+        if self.check_passward(account_id):
+            print(self.accounts[account_id].withdraw(amount))
     
     def transfer(self, from_account_id: str, to_account_id: str, amount: int) -> None:
         """transfer money to another account
@@ -77,12 +92,13 @@ class AccountManagement:
         """
         if from_account_id in self.accounts:
             if to_account_id in self.accounts:
-                withdraw_result = self.accounts[from_account_id].withdraw(amount)
-                if "Failed" not in str(withdraw_result):
-                    self.accounts[to_account_id].deposit(amount)
-                    print(f"Transferred {amount} from account {from_account_id} to account {to_account_id}.")
-                else:
-                    print(withdraw_result)
+                if self.check_passward(from_account_id):
+                    withdraw_result = self.accounts[from_account_id].withdraw(amount)
+                    if "Failed" not in str(withdraw_result):
+                        self.accounts[to_account_id].deposit(amount)
+                        print(f"Transferred {amount} from account {from_account_id} to account {to_account_id}.")
+                    else:
+                        print(withdraw_result)
             else:
                 print(f"Account {to_account_id} does not exist.")
         else:
