@@ -43,9 +43,9 @@ class BankingSystemInterface(CommandLineInterface):
             if initial_balance >= 0:
                 self.account_management.open_account(CheckingAccount, customer_name, passward, initial_balance)
             else:
-                print("Invalid initial balance. Failed to open new account")
+                print("Please input positive amount. Failed to open new account")
         except ValueError:
-            print("Invalid amount.")
+            print("Invalid initial balance. Failed to open new account")
 
     def close_account(self):
             account_id = self.user_input("Enter account ID: ")

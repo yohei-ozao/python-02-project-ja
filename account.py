@@ -25,7 +25,6 @@ def require_password(func):
 class Account(ABC):
     __account_id = 0
     def __init__(self, name, passward, balance=0,):
-        # Initialize any necessary data structures
         self.account_id = Account.__account_id
         self.name = name
         Account.__account_id += 1
