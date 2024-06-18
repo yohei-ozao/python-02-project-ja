@@ -77,9 +77,12 @@ class AccountManagement:
         """
         if from_account_id in self.accounts:
             if to_account_id in self.accounts:
-                if "Failed" not in self.accounts[from_account_id].withdraw(amount):
+                withdraw_result = self.accounts[from_account_id].withdraw(amount)
+                if "Failed" not in str(withdraw_result):
                     self.accounts[to_account_id].deposit(amount)
                     print(f"Transferred {amount} from account {from_account_id} to account {to_account_id}.")
+                else:
+                    print(withdraw_result)
             else:
                 print(f"Account {to_account_id} does not exist.")
         else:

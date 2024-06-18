@@ -18,7 +18,7 @@ def require_password(func):
         if passward == self.passward:
             return func(self, *args, **kwargs)
         else:
-            return "Passward is wrong!!"
+            return "Failed to operate. Your passward is incorrect."
 
     return _wrapper
     
