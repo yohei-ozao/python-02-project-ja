@@ -11,11 +11,10 @@
 
 ### インストール手順
 1. リポジトリをクローンします。
-   git clone https://github.com/yourusername/yourproject.git
-   cd yourproject
-
-
-2. 必要なパッケージをインストールします。
+    
+    ```
+    git clone https://github.com/yohei-ozao/python-02-project-ja.git
+    ```
  
 ### 実行手順
 1. アプリケーションを実行します。
